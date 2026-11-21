@@ -1,0 +1,339 @@
+/*
+  Look: a paper-and-ink kitchen timer. Warm off-white background, near-black
+  ink, one tomato accent for focus and a sage green for breaks. No cards or
+  shadows: sections are separated by thin rules.
+*/
+
+:root {
+  --paper: #f4efe4;
+  --ink: #1f1c18;
+  --muted: #7a7266;
+  --rule: #d9d1c1;
+  --accent: #d2452a; /* tomato: focus */
+  --break: #5b7d57;  /* sage: breaks */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  width: 260px;
+  margin: 0;
+  padding: 0 14px;
+  font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  font-size: 12px;
+  color: var(--ink);
+  background: var(--paper);
+  accent-color: var(--ink);
+}
+
+section,
+.settings-panel {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.settings-panel {
+  border-bottom: none;
+}
+
+.row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.label,
+summary {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+/* Buttons: flat, squared, inked outline. The primary one is filled. */
+button {
+  border: 1.5px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  border-radius: 3px;
+  padding: 4px 10px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button:hover {
+  background: rgba(31, 28, 24, 0.07);
+}
+
+button.primary {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+button.primary:hover {
+  background: #3a352e;
+}
+
+input[type="text"] {
+  flex: 1;
+  min-width: 0;
+  padding: 4px 0;
+  border: none;
+  border-bottom: 1.5px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  outline: none;
+}
+
+input[type="text"]::placeholder {
+  color: var(--muted);
+}
+
+input[type="text"]:focus {
+  border-bottom-color: var(--accent);
+}
+
+/* ---------------- Timer ---------------- */
+
+.timer-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.phase {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.timer.on-break .phase {
+  color: var(--break);
+}
+
+/* One dot per focus session until the long break */
+.dots {
+  display: flex;
+  gap: 4px;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink);
+}
+
+.dot.done {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.timer.on-break .dot.done {
+  background: var(--break);
+  border-color: var(--break);
+}
+
+.clock {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 44px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin: 8px 0 10px;
+}
+
+.progress {
+  height: 3px;
+  background: var(--rule);
+  margin-bottom: 10px;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+  transition: width 0.25s linear;
+}
+
+.timer.on-break .progress-fill {
+  background: var(--break);
+}
+
+/* ---------------- Music ---------------- */
+
+#music-form {
+  margin-bottom: 10px;
+}
+
+.now-playing {
+  margin: 0 0 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  /* Fade the text out at both edges as it scrolls */
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+/* Scrolls the title right to left, one full pass every 10 seconds */
+.marquee {
+  display: inline-flex;
+  animation: scroll-title 10s linear infinite;
+}
+
+.marquee span {
+  padding-right: 40px; /* gap between the end of the title and its repeat */
+}
+
+@keyframes scroll-title {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.error {
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+button.play-toggle {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  flex-shrink: 0;
+}
+
+button.play-toggle:hover {
+  background: #3a352e;
+}
+
+.play-toggle svg {
+  width: 11px;
+  height: 11px;
+  fill: var(--paper);
+}
+
+.play-toggle .icon-pause,
+.play-toggle.playing .icon-play {
+  display: none;
+}
+
+.play-toggle.playing .icon-pause {
+  display: block;
+}
+
+.volume {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  font-weight: 700;
+  margin-left: 6px;
+}
+
+.volume input {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ---------------- Settings ---------------- */
+
+summary {
+  cursor: pointer;
+  margin-bottom: 0;
+  list-style: none;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+/* The whole Settings row is clickable, with an arrow on the right that
+   points down when closed and up when open. */
+summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+summary:hover {
+  color: var(--accent);
+}
+
+summary::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  margin-right: 3px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+}
+
+details[open] summary::after {
+  transform: translateY(2px) rotate(-135deg);
+}
+
+.settings {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.settings label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+}
+
+.settings input[type="number"] {
+  width: 40px;
+  padding: 3px 0;
+  border: 1.5px solid var(--ink);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--ink);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12px;
+  text-align: center;
+  flex-shrink: 0;
+  outline: none;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.settings input[type="number"]:focus {
+  border-color: var(--accent);
+}
+
+/* Hide the number-box arrows so the digits sit in the exact center */
+.settings input[type="number"]::-webkit-inner-spin-button,
+.settings input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.settings .checkbox {
+  justify-content: flex-start;
+  margin-top: 2px;
+}
+
+/* Remove the checkbox's built-in margin so it lines up with the text above */
+.settings .checkbox input {
+  margin: 0;
+}

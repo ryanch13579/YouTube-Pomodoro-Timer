@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <!-- Timer -->
+    <section class="timer" id="timer-card">
+      <div class="timer-head">
+        <span class="phase" id="phase-label">Focus</span>
+        <span class="dots" id="session-dots" title="Focus sessions done this round"></span>
+      </div>
+      <div class="clock" id="clock">25:00</div>
+      <div class="progress"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="row buttons">
+        <button id="timer-toggle" class="primary">Start</button>
+        <button id="timer-skip" title="Skip to the next phase">Skip</button>
+        <button id="timer-reset" title="Back to a fresh focus session">Reset</button>
+      </div>
+    </section>
+
+    <!-- Music -->
+    <section class="music">
+      <div class="label">Music</div>
+      <form id="music-form" class="row">
+        <input id="url-input" type="text" placeholder="YouTube link" autocomplete="off" spellcheck="false" />
+        <button type="submit">Load</button>
+      </form>
+      <!-- The title scrolls right to left. It's written twice in a row so the
+           loop is seamless: when the first copy scrolls off, the second is
+           exactly where the first started. -->
+      <div class="now-playing" id="now-playing" hidden>
+        <div class="marquee"><span id="title-a"></span><span id="title-b" aria-hidden="true"></span></div>
+      </div>
+      <div class="error" id="music-error" hidden></div>
+      <div class="row">
+        <button id="music-toggle" class="play-toggle" title="Play">
+          <svg class="icon-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5v9l7.5-4.5z" /></svg>
+          <svg class="icon-pause" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.5h2.5v9H2.5zM7 1.5h2.5v9H7z" /></svg>
+        </button>
+        <label class="volume">
+          Volume
+          <input id="volume" type="range" min="0" max="100" />
+        </label>
+      </div>
+    </section>
+
+    <!-- Settings -->
+    <details class="settings-panel">
+      <summary>Settings</summary>
+      <div class="settings">
+        <label>Focus (min) <input id="work-minutes" type="number" min="1" max="180" /></label>
+        <label>Break (min) <input id="short-minutes" type="number" min="1" max="60" /></label>
+        <label>Focus sessions <input id="total-sessions" type="number" min="1" max="12" /></label>
+        <label class="checkbox">
+          <input id="pause-on-break" type="checkbox" /> Pause music during breaks
+        </label>
+        <label class="checkbox">
+          <input id="chime" type="checkbox" /> Chime when a session ends
+        </label>
+      </div>
+    </details>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
