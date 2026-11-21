@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Focus Tunes: YouTube Music + Pomodoro
 
 A Chrome extension that plays a YouTube video as background music and runs a
@@ -62,3 +63,7 @@ such as `"timer:start"` or `"music:load"`; see the `handlers` object in
 - Background: `chrome://extensions` → Focus Tunes → **service worker** link opens DevTools.
 - Hidden player: `chrome://extensions` → Focus Tunes → **offscreen.html** link (shown while music is loaded).
 - Popup: right-click the popup → **Inspect**.
+=======
+# YouTube-Pomodoro-Timer-hi.md
+A Chrome extension that plays any YouTube video as background music while you work through Pomodoro focus and break sessions, all from one popup.
+>>>>>>> e1e7a36a277c9cacb3136c8d88c28787aacaa268
