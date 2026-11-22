@@ -120,7 +120,7 @@ sequenceDiagram
     participant Popup as popup.js
     participant BG as background.js
     participant Store as chrome.storage
-    participant Off as offscreen.js
+    participant Player as offscreen.js
     participant YT as YouTube iframe
 
     User->>Popup: Paste link, click Load
@@ -129,13 +129,13 @@ sequenceDiagram
     BG->>Store: music = { videoId, playing: true, ... }
     Store-->>Popup: onChanged → redraw ("Loading…")
     BG->>BG: installRefererRule()
-    BG->>Off: offscreen.createDocument()
-    Off->>BG: player:hello
-    BG-->>Off: { music, volume, chime }
-    Off->>YT: create iframe /embed/{id}?enablejsapi=1&loop=1
-    Off->>YT: postMessage "listening" (every 500 ms until reply)
-    YT-->>Off: infoDelivery { videoData.title, currentTime }
-    Off->>BG: player:title / player:progress (every 3 s)
+    BG->>Player: offscreen.createDocument()
+    Player->>BG: player:hello
+    BG-->>Player: { music, volume, chime }
+    Player->>YT: create iframe /embed/{id}?enablejsapi=1&loop=1
+    Player->>YT: postMessage "listening" (every 500 ms until reply)
+    YT-->>Player: infoDelivery { videoData.title, currentTime }
+    Player->>BG: player:title / player:progress (every 3 s)
     BG->>Store: music.title, music.currentTime
     Store-->>Popup: onChanged → shows title
 ```
